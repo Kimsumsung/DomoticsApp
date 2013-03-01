@@ -68,7 +68,7 @@ public class DomoticsEncryption {
 	 * @param phone_id
 	 * @return Decrypted message (byte array)
 	 */
-	public byte[] Decrypt(byte[] in_decrypt) {
+	public byte[] Decrypt(byte[]in_decrypt) {
 		
 		
 		byte shift; //first char is phone number[1,9], not encrypted

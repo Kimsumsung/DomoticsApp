@@ -227,9 +227,23 @@ public class MainActivity extends Activity {
 		@Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
- 
+            DomoticsEncryption decrypt = new DomoticsEncryption();
+            String decryptMsg = values[0]+"\r\n";
+            byte[] bytesValues = decryptMsg.getBytes();
+            byte[] decrypted_msg = decrypt.Decrypt(bytesValues);
+            String output_decryption = new String(decrypted_msg);
+            
+            
+     
+            
+            
+            
+            
+            
+            
+            
             //in the arrayList we add the messaged received from server
-            arrayList.add("Server: " + values[0]);
+            arrayList.add("Server:"+ output_decryption);
             
             // notify the adapter that the data set has changed. This means that new message received
             // from server was added to the list
