@@ -1,8 +1,12 @@
 package com.domotics;
 
+import com.aae.domotics.MainActivity;
+
+
 public class DomoticsEncryption {
-	
-	/**
+		private String di;
+
+		/**
 	 * Phone_id=Unit Number, Gateways provide 9 device/Number UDID or Device_id
 	 * = Unit_id encr_decr_message = <Mess_TYPE>,<CMD>, <OUT_ID>,<OUT_NR>,[DATA]
 	 * CR+LF
@@ -21,18 +25,25 @@ public class DomoticsEncryption {
 	
 	public byte[] Encrypt(byte[] msg, byte phone_id) {
 		byte encrypt_message[] = new byte[msg.length + 2];
-		// Declares array
-		byte[] unit_id = {'1', '2', '3', '4', '5', '6', '7', '8', '9','0',
+		di = MainActivity.DeviceId;
+		byte[] bytedi = di.getBytes();//Arrays A
+		byte[] byteFulfill = {'0','0','0','0','0','0','0','0','0','0',
+							  '0','0','0','0','0','0','0','0','0','0',
+							  '0','0','0','0','0'};//Arrays B
+		int lenA = bytedi.length;
+		int lenB = byteFulfill.length;
+		byte[] unit_id = new byte[lenA + lenB];
+		System.arraycopy(bytedi, 0, unit_id, 0, lenA);
+		System.arraycopy(byteFulfill, 0, unit_id, lenA, lenB);
+		/*byte[] unit_id = {'1', '2', '3', '4', '5', '6', '7', '8', '9','0',
 						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
 						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
 						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0'
-		};
+		};*/
+		
 		
 		byte i = 2;
 		int shift = 0;
-		//msg = {'R', ',', 'O', 'O', '3', '1'}; // Command
-																		// Client
-																		// Side
 		encrypt_message[0] = '1';// phone_id, 9 device
 		encrypt_message[1] = ',';
 

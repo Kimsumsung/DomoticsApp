@@ -58,9 +58,14 @@ public class TCPClient {
             }
         }
         else if(charMessage[0] == 'R' && charMessage[2] == 'U'){
+        	DomoticsEncryption enc = new DomoticsEncryption();
+        	//Encryption message
+        	byte[] encrypted_msg = enc.Encrypt(byteArray, (byte)'1');
+        	String output_encrypted= new String(encrypted_msg);	
+        	//End of Encrypted
         	if(out != null && !out.checkError()) {
                 //out.println(message);
-                out.print(strMessage);
+                out.print(output_encrypted);
                 out.flush();
             	}
         	}
