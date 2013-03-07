@@ -164,8 +164,7 @@
         android:layout_alignLeft="@+id/editText"
         android:layout_alignTop="@+id/imageturnon"
         android:layout_toLeftOf="@+id/imageturnon"
-        android:text="Register
-        				(R,U)" />
+        android:text="Register" />
 
     <ImageButton
         android:id="@+id/imageturnoff"
@@ -175,5 +174,17 @@
         android:layout_alignTop="@+id/imageturnon"
         android:layout_marginLeft="12dp"
         android:src="@drawable/light2" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/register"
+        android:gravity="center"
+        android:text="R,U,DI(40),"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

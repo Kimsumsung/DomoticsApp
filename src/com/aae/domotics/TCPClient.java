@@ -32,62 +32,33 @@ public class TCPClient {
      * @param message text entered by client
      */
     public void sendMessage(String message){
-    	//String to String array conversion
-    	String strMessage = message+"\r\n";
-    	//Convert String to char for check 
-    	char[] charMessage = strMessage.toCharArray();
-    	// Convert String message to byte arrays
-    	byte[] byteArray = strMessage.getBytes();
     	
-    	// Convert String message to byte arrays test
+    	String strMessage = message+"\r\n";
+    	char[] charMessage = strMessage.toCharArray();
+    	byte[] byteArray = strMessage.getBytes();
+    	DomoticsEncryption enc = new DomoticsEncryption();
     	
     	
     	// Check encrypt/undecrypt or not!!! 
-        if(charMessage[0] == 'E' && charMessage[2] == 'V'){
-        	if(out != null && !out.checkError()) {
-                //out.println(message);
-                out.print(strMessage);
-                out.flush();
-            }
-        }
-        else if(charMessage[0] == 'R' && charMessage[2] == 'N'){
-        	if(out != null && !out.checkError()) {
-                //out.println(message);
-                out.print(strMessage);
-                out.flush();
-            }
-        }
-        else if(charMessage[0] == 'R' && charMessage[2] == 'U'){
-        	DomoticsEncryption enc = new DomoticsEncryption();
-        	//Encryption message
-        	byte[] encrypted_msg = enc.Encrypt(byteArray, (byte)'1');
-        	String output_encrypted= new String(encrypted_msg);	
-        	//End of Encrypted
-        	if(out != null && !out.checkError()) {
-                //out.println(message);
-                out.print(output_encrypted);
-                out.flush();
-            	}
-        	}
-        else{
-        	DomoticsEncryption enc = new DomoticsEncryption();
-        	//Encryption message
-        	byte[] encrypted_msg = enc.Encrypt(byteArray, (byte)'1');
-        	String output_encrypted= new String(encrypted_msg);	
-        	//End of Encrypted
-        	if(out != null && !out.checkError()) {
-                //out.println(message);
-                out.print(output_encrypted);
-                out.flush();
-            	}
-        
-        }
+        if(charMessage[2] != 'U' && charMessage[2] != 'V' && charMessage[2] !='N'){
         	
-        
-       
+        	byte[] encrypted_msg = enc.Encrypt(byteArray, (byte)'1');
+        	String output_encrypted= new String(encrypted_msg);	
+        	//End of Encrypted
+        	if(out != null && !out.checkError()) {
+                //out.println(message);
+                out.print(output_encrypted);
+                out.flush();
+            	} 	
+        }
+        else{
+        	if(out != null && !out.checkError()) {
+                //out.println(message);
+                out.print(strMessage);
+                out.flush();
+            }
+        }   
     }
-
-	 
 
     public void stopClient(){
         mRun = false;
@@ -151,7 +122,6 @@ public class TCPClient {
         }
  
     }
- 
     //Declare the interface. The method messageReceived(String message) will must be implemented in the MyActivity
     //class at on asynckTask doInBackground
     public interface OnMessageReceived {

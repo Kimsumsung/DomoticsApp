@@ -4,9 +4,12 @@ import com.aae.domotics.MainActivity;
 
 
 public class DomoticsEncryption {
-		private String di;
+	private String di;
 
 		/**
+	 * -------------------------------------------------------------------------
+	 * Encryption routine
+	 * -------------------------------------------------------------------------
 	 * Phone_id=Unit Number, Gateways provide 9 device/Number UDID or Device_id
 	 * = Unit_id encr_decr_message = <Mess_TYPE>,<CMD>, <OUT_ID>,<OUT_NR>,[DATA]
 	 * CR+LF
@@ -23,33 +26,24 @@ public class DomoticsEncryption {
 	 */
 	
 	
-	public byte[] Encrypt(byte[] msg, byte phone_id) {
+	public byte[] Encrypt(byte[] msg,byte phone_id) {
+		
+		  //End of plus Unit_id + DiFulfill
 		byte encrypt_message[] = new byte[msg.length + 2];
-		di = MainActivity.DeviceId;
-		byte[] bytedi = di.getBytes();//Arrays A
-		byte[] byteFulfill = {'0','0','0','0','0','0','0','0','0','0',
-							  '0','0','0','0','0','0','0','0','0','0',
-							  '0','0','0','0','0'};//Arrays B
-		int lenA = bytedi.length;
-		int lenB = byteFulfill.length;
-		byte[] unit_id = new byte[lenA + lenB];
-		System.arraycopy(bytedi, 0, unit_id, 0, lenA);
-		System.arraycopy(byteFulfill, 0, unit_id, lenA, lenB);
-		/*byte[] unit_id = {'1', '2', '3', '4', '5', '6', '7', '8', '9','0',
-						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
-						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
-						  '1', '2', '3', '4', '5', '6', '7', '8', '9','0'
-		};*/
+		byte[] device_id = {'1', '2', '3', '4', '5', '6', '7', '8', '9','0',
+				  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
+				  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
+				  '1', '2', '3', '4', '5', '6', '7', '8', '9','0'
+		};
 		
-		
-		byte i = 2;
+	
 		int shift = 0;
-		encrypt_message[0] = '1';// phone_id, 9 device
+		encrypt_message[0] = phone_id;
 		encrypt_message[1] = ',';
-
+		byte i = 2;
 		byte LINE_FEED = '\n';
 		while (msg[i - 2] != LINE_FEED) {
-			shift = unit_id[i - 1] + unit_id[0];
+			shift = device_id[i - 1] + device_id[0];
 			encrypt_message[i] = msg[i - 2];
 			if ((encrypt_message[i] >= '0' && encrypt_message[i] <= '9')
 					|| (encrypt_message[i] >= 'A' && encrypt_message[i] <= 'Z')
@@ -112,7 +106,7 @@ public class DomoticsEncryption {
 			}
 			i++;		
 		}
-		decrypt_message[i] = LINE_FEED;	
+		decrypt_message[i] = LINE_FEED;
 		return decrypt_message;
 	}
 

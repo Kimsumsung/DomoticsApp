@@ -15,12 +15,14 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import com.domotics.DomoticsEncryption;
 
+
 public class MainActivity extends Activity {
 	private ListView mList;
 	private ArrayList<String> arrayList;
 	private MyCustomAdapter mAdapter;
 	private TCPClient mTcpClient;
-	public static String DeviceId;
+	public String DeviceId;
+	
 		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
@@ -30,21 +32,37 @@ public class MainActivity extends Activity {
 		arrayList = new ArrayList<String>();
 		//Button Send to 
 		final EditText editText = (EditText) findViewById(R.id.editText);
-		Button send = (Button) findViewById(R.id.send_button);
+		final Button send = (Button) findViewById(R.id.send_button);
 		final ImageButton turnOn = (ImageButton) findViewById(R.id.imageturnon);
 		final ImageButton turnOff = (ImageButton) findViewById(R.id.imageturnoff);
-		Button version = (Button) findViewById(R.id.version);
-		Button name = (Button) findViewById(R.id.name);
-		Button unitid = (Button) findViewById(R.id.unitid);
-		Button register =(Button) findViewById(R.id.register);
+		final Button version = (Button) findViewById(R.id.version);
+		final Button name = (Button) findViewById(R.id.name);
+		final Button unitid = (Button) findViewById(R.id.unitid);
+		final Button register =(Button) findViewById(R.id.register);
 		
 
 		// relate the listView from java to the one created in xml
 		mList = (ListView) findViewById(R.id.list);
 		mAdapter = new MyCustomAdapter(this, arrayList);
 		mList.setAdapter(mAdapter);
-
-		// connect to the server
+		
+		/*
+		//Get Device_ID and get log android_id and Device_id
+		TelephonyManager tm = (TelephonyManager) this
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		Log.d(">>>>",
+				"Android ID: "
+						+ Secure.getString(getContentResolver(),
+								Secure.ANDROID_ID));
+		Log.d(">>>>", "Device ID : " + tm.getDeviceId());
+		 String DeviceFulfill = "0000000000";
+		 String DeviceId = new String(tm.getDeviceId());
+		 String repeatDeviceId =  new String(DeviceId);
+		 repeatDeviceId += DeviceId;
+		 repeatDeviceId = repeatDeviceId+DeviceFulfill;
+		*/
+		 
+		 // connect to the server
 		new connectTask().execute("");
 
 		send.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +158,7 @@ public class MainActivity extends Activity {
 			public void onClick(View view) {
 
 				String message = "R,N";
+				
 				// add the text in the arrayList
 				arrayList.add("Client: " + message);
 
@@ -179,9 +198,13 @@ public class MainActivity extends Activity {
 		register.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				
-				String message = "R,U";
+				//String repeatDeviceId;
+				//String message = "R,U";
+				//String registerMessage = new String(repeatDeviceId);
+				//String combineString = message + registerMessage;
 				// add the text in the arrayList
+				//StringBuilder sb1 = new StringBuilder("R,U,3537710535716333537710535716330000000000");
+				String message = "R,U,3537710535716333537710535716330000000000";
 				arrayList.add("Client: " + message);
 
 				// sends the message to the server
@@ -196,21 +219,7 @@ public class MainActivity extends Activity {
 	
 			}
 		});
-		
-	
-		
-		
-		
-		TelephonyManager tm = (TelephonyManager) this
-				.getSystemService(Context.TELEPHONY_SERVICE);
 
-		Log.d(">>>>",
-				"Android ID: "
-						+ Secure.getString(getContentResolver(),
-								Secure.ANDROID_ID));
-		Log.d(">>>>", "Device ID : " + tm.getDeviceId());
-		
-		DeviceId = tm.getDeviceId();
 		
 	}
 			
@@ -242,11 +251,17 @@ public class MainActivity extends Activity {
 		@Override
         protected void onProgressUpdate(String... values) {
            super.onProgressUpdate(values);
-           //String strValues = new String(values[0]);
            String strValues = new String(values[0]);
            char[] charMessage = strValues.toCharArray();
-            
-           if(charMessage[0]=='I'&&charMessage[2]=='V'&&charMessage[4]=='0'&&charMessage[5]=='1'&&charMessage[6]=='0'&&
+           if(charMessage[0]=='C'&& charMessage[2]=='U'){
+        	   //in the arrayList we add the messaged received from server
+               arrayList.add("Server:"+strValues);
+               
+               // notify the adapter that the data set has changed. This means that new message received
+               // from server was added to the list
+               mAdapter.notifyDataSetChanged();
+           }
+           /*if(charMessage[0]=='I'&&charMessage[2]=='V'&&charMessage[4]=='0'&&charMessage[5]=='1'&&charMessage[6]=='0'&&
         	  charMessage[7]=='1'&&charMessage[9]=='0'&&charMessage[10]=='1'&&charMessage[11]=='0'&&charMessage[12]=='0'){
         	   //in the arrayList we add the messaged received from server
                arrayList.add("Server:"+strValues);
@@ -271,7 +286,7 @@ public class MainActivity extends Activity {
                // notify the adapter that the data set has changed. This means that new message received
                // from server was added to the list
                mAdapter.notifyDataSetChanged();
-           }
+           }*/
            
            else{   
             //Decryption---------Valuse need to decrypt.
