@@ -114,8 +114,6 @@ public class MainActivity extends Activity {
 			public void onClick(View view) {
 
 				String message ="R,o,O,31";
-				//Convert String to byte
-				//byte[] messageByte = message.getBytes();
 				
 				// add the text in the arrayList
 				arrayList.add("Client: " + message);
@@ -213,7 +211,7 @@ public class MainActivity extends Activity {
 				}
 
 				// refresh the list
-				mAdapter.notifyDataSetChanged();
+				mAdapter.notifyDataSetChanged();        
 				editText.setText("");
 				
 	
@@ -253,57 +251,32 @@ public class MainActivity extends Activity {
            super.onProgressUpdate(values);
            String strValues = new String(values[0]);
            char[] charMessage = strValues.toCharArray();
-           if(charMessage[0]=='C'&& charMessage[2]=='U'){
-        	   //in the arrayList we add the messaged received from server
-               arrayList.add("Server:"+strValues);
-               
-               // notify the adapter that the data set has changed. This means that new message received
-               // from server was added to the list
-               mAdapter.notifyDataSetChanged();
-           }
-           /*if(charMessage[0]=='I'&&charMessage[2]=='V'&&charMessage[4]=='0'&&charMessage[5]=='1'&&charMessage[6]=='0'&&
-        	  charMessage[7]=='1'&&charMessage[9]=='0'&&charMessage[10]=='1'&&charMessage[11]=='0'&&charMessage[12]=='0'){
-        	   //in the arrayList we add the messaged received from server
-               arrayList.add("Server:"+strValues);
-               
-               // notify the adapter that the data set has changed. This means that new message received
-               // from server was added to the list
-               mAdapter.notifyDataSetChanged();
-               }
-           else if(charMessage[0]=='C'&& charMessage[2]=='N'&& charMessage[4]=='0'){
-        	   //in the arrayList we add the messaged received from server
-               arrayList.add("Server:"+strValues);
-               
-               // notify the adapter that the data set has changed. This means that new message received
-               // from server was added to the list
-               mAdapter.notifyDataSetChanged();
-           }
            
-           else if(charMessage[0]=='C'&& charMessage[2]=='U'&& charMessage[4]=='0'&& charMessage[6]=='0'){
-        	   //in the arrayList we add the messaged received from server
-               arrayList.add("Server:"+strValues);
-               
-               // notify the adapter that the data set has changed. This means that new message received
-               // from server was added to the list
-               mAdapter.notifyDataSetChanged();
-           }*/
            
-           else{   
-            //Decryption---------Valuse need to decrypt.
-            DomoticsEncryption decrypt = new DomoticsEncryption();
-            String decryptMsg = strValues+"\r\n";
-            byte[] bytesValues = decryptMsg.getBytes();
-            byte[] decrypted_msg = decrypt.Decrypt(bytesValues);
-            String output_decryption = new String(decrypted_msg);
+           if(charMessage[2] != 'V' && charMessage[2] != 'N' && charMessage[2] != 'U' ){
+        	   //Decryption---------Valuse need to decrypt.
+               DomoticsEncryption decrypt = new DomoticsEncryption();
+               String decryptMsg = strValues+"\r\n";
+               byte[] bytesValues = decryptMsg.getBytes();
+               byte[] decrypted_msg = decrypt.Decrypt(bytesValues);
+               String output_decryption = new String(decrypted_msg);
 
-            //in the arrayList we add the messaged received from server
-            arrayList.add("Server:"+ output_decryption);
-            
-            // notify the adapter that the data set has changed. This means that new message received
-            // from server was added to the list
-            mAdapter.notifyDataSetChanged();
+               //in the arrayList we add the messaged received from server
+               arrayList.add("Server:"+ output_decryption);
+               
+               // notify the adapter that the data set has changed. This means that new message received
+               // from server was added to the list
+               mAdapter.notifyDataSetChanged();
            }
-            
+           else{
+        	   //in the arrayList we add the messaged received from server
+               arrayList.add("Server:"+strValues);
+               
+               // notify the adapter that the data set has changed. This means that new message received
+               // from server was added to the list
+               mAdapter.notifyDataSetChanged();
+           }
+
         }
 	}
 }

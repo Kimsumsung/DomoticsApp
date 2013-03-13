@@ -16,7 +16,6 @@ public class TCPClient {
     private boolean mRun = false;
     
     //Declare encryption object
-   
     PrintWriter out;
     BufferedReader in;
  
@@ -54,7 +53,7 @@ public class TCPClient {
         else{
         	if(out != null && !out.checkError()) {
                 //out.println(message);
-                out.print(strMessage);
+                out.print(strMessage);	
                 out.flush();
             }
         }   

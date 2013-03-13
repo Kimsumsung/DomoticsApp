@@ -4,7 +4,7 @@ import com.aae.domotics.MainActivity;
 
 
 public class DomoticsEncryption {
-	private String di;
+	//private String di;
 
 		/**
 	 * -------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public class DomoticsEncryption {
 	
 	public byte[] Encrypt(byte[] msg,byte phone_id) {
 		
-		  //End of plus Unit_id + DiFulfill
+		  
 		byte encrypt_message[] = new byte[msg.length + 2];
 		byte[] device_id = {'1', '2', '3', '4', '5', '6', '7', '8', '9','0',
 				  '1', '2', '3', '4', '5', '6', '7', '8', '9','0',
